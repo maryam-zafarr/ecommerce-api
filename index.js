@@ -1,11 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const bodyParser = require("body-parser");
 require("./auth/auth");
 
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
+const productRoute = require("./routes/product");
 
 const app = express();
 
@@ -20,10 +20,11 @@ mongoose
     console.log(error);
   });
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
+app.use("/api/products", productRoute);
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
