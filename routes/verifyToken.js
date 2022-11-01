@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
-  const authHeader = req.headers.verifyToken;
+  const authHeader = req.headers.token;
   if (authHeader) {
     const token = authHeader.split(" ")[1];
     jwt.verify(token, "TOP_SECRET", (err, user) => {
@@ -16,7 +16,7 @@ const verifyToken = (req, res, next) => {
 
 const verifyTokenAndAuthorization = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user.id === req.params.id || req.user.isAdmin) {
+    if (req.user.user._id === req.params.id || req.user.isAdmin) {
       next();
     } else {
       res.status(403).json("You are not allowed to do that.");
@@ -26,7 +26,7 @@ const verifyTokenAndAuthorization = (req, res, next) => {
 
 const verifyTokenAndAdmin = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user.isAdmin) {
+    if (req.user.user.isAdmin) {
       next();
     } else {
       res.status(403).json("You are not allowed to do that.");

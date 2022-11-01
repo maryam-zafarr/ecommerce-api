@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 require("./auth/auth");
 
 const authRoute = require("./routes/auth");
+const userRoute = require("./routes/user");
 
 const app = express();
 
@@ -22,6 +23,7 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
