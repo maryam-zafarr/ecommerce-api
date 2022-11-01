@@ -4,60 +4,60 @@ const {
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } = require("./verifyToken");
-const Cart = require("../models/Cart");
+const Order = require("../models/Order");
 
-// CREATE CART
+// CREATE ORDER
 router.post("/", verifyToken, async (req, res) => {
-  const newCart = new Cart(req.body);
+  const newOrder = new Order(req.body);
   try {
-    const savedCart = await newCart.save();
-    res.status(200).json(savedCart);
+    const savedOrder = await newOrder.save();
+    res.status(200).json(savedOrder);
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-// EDIT CART
-router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+// EDIT ORDER
+router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const updatedCart = await Cart.findByIdAndUpdate(
+    const updatedOrder = await Order.findByIdAndUpdate(
       req.params.id,
       {
         $set: req.body,
       },
       { new: true }
     );
-    res.status(200).json(updatedCart);
+    res.status(200).json(updatedOrder);
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-// DELETE CART
-router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+// DELETE ORDER
+router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
-    await Cart.findByIdAndDelete(req.params.id);
+    await Order.findByIdAndDelete(req.params.id);
     res.status(200).json("Successfully deleted");
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-// GET USER CART
-router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
+// GET USER ORDERS
+router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const cart = await Cart.findOne({ userId: req.params.id });
-    res.status(200).json(cart);
+    const orders = await Order.find({ userId: req.params.id });
+    res.status(200).json(orders);
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-// GET ALL CARTS
+// GET ALL ORDERS
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const carts = Cart.find();
-    res.status(200).json(carts);
+    const orders = Order.find();
+    res.status(200).json(orders);
   } catch (error) {
     res.status(500).json(error);
   }
