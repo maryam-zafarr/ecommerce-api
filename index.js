@@ -2,8 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
-
 require("./auth/auth");
+
 const authRoute = require("./routes/auth");
 
 const app = express();

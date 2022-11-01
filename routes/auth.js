@@ -31,7 +31,7 @@ router.post("/login", async (req, res, next) => {
 
         const { password, ...others } = user._doc;
 
-        return res.json({ token, others });
+        return res.json({ token, ...others });
       });
     } catch (error) {
       return next();
