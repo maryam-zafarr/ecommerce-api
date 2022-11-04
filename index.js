@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+dotenv.config();
 require("./auth/auth");
 
 const authRoute = require("./routes/auth");
@@ -12,8 +13,6 @@ const orderRoute = require("./routes/order");
 const stripeRoute = require("./routes/stripe");
 
 const app = express();
-
-dotenv.config();
 
 mongoose
   .connect(process.env.MONGO_URL)
