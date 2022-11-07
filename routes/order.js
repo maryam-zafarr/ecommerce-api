@@ -3,7 +3,7 @@ const { verifyToken, verifyTokenAndAdmin } = require("./verifyToken");
 const Order = require("../models/Order");
 
 // CREATE ORDER
-router.post("/", verifyToken, async (req, res) => {
+router.post("/", async (req, res) => {
   const newOrder = new Order(req.body);
   try {
     const savedOrder = await newOrder.save();
@@ -50,9 +50,9 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
 });
 
 // GET ALL ORDERS
-router.get("/", verifyTokenAndAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const orders = Order.find();
+    const orders = await Order.find();
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json(error);
@@ -81,6 +81,27 @@ router.get("/income", async (req, res) => {
       },
     ]);
     res.status(200).json(income);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// ORDER COUNT
+router.get("/count", async (req, res) => {
+  try {
+    const orders = await Order.find();
+    res.status(200).json(orders.length);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// CUSTOMER COUNT
+router.get("/customers", async (req, res) => {
+  try {
+    const orders = await Order.find();
+    const customers = [...new Set(orders.map((order) => order.userId))];
+    res.status(200).json(customers.length);
   } catch (error) {
     res.status(500).json(error);
   }
